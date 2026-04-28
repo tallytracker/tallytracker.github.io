@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tally — The Simple Balance Tracker</title>
+<meta name="description" content="Track balances across all your activities. Sessions, projects, lending, and group expenses — all in one place.">
+<link rel="apple-touch-icon" sizes="180x180" href="Tally/apple-touch-icon.png">
+<link rel="icon" href="Tally/icon-192.png">
+<meta name="theme-color" content="#f7f5f2">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f5f2;
+  --text:#2c2418;
+  --text-muted:#9e9486;
+  --accent:#e67e22;
+  --green:#27ae60;
+  --border:#ede8e1;
+  --card:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Sora',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 24px;
+  position:relative;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:120px;
+  background:linear-gradient(to bottom,transparent,var(--bg));
+  pointer-events:none;
+}
+.hero-logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:24px;
+  animation:fadeDown .8s ease;
+}
+.hero-logo svg{flex-shrink:0}
+.hero-logo-text{
+  font-size:52px;
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:-1px;
+}
+.hero-tagline{
+  font-size:14px;
+  color:var(--text);
+  margin-bottom:8px;
+  animation:fadeDown .8s ease .1s both;
+}
+.hero-sub{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:40px;
+  animation:fadeDown .8s ease .2s both;
+}
+.hero-sub span{color:var(--accent)}
+.hero-headline{
+  font-size:clamp(28px,5vw,44px);
+  font-weight:700;
+  line-height:1.2;
+  max-width:600px;
+  margin-bottom:16px;
+  animation:fadeDown .8s ease .3s both;
+}
+.hero-desc{
+  font-size:16px;
+  color:var(--text-muted);
+  max-width:480px;
+  margin-bottom:36px;
+  animation:fadeDown .8s ease .4s both;
+}
+.hero-cta{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:600;
+  padding:14px 36px;
+  border-radius:12px;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  animation:fadeDown .8s ease .5s both;
+}
+.hero-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(230,126,34,.3);
+}
+.hero-secondary{
+  display:inline-block;
+  margin-left:12px;
+  font-size:14px;
+  color:var(--text-muted);
+  text-decoration:none;
+  font-weight:500;
+  animation:fadeDown .8s ease .5s both;
+}
+.hero-secondary:hover{color:var(--accent)}
+
+/* ===== FEATURES ===== */
+.features{
+  padding:80px 24px;
+  max-width:900px;
+  margin:0 auto;
+}
+.section-title{
+  text-align:center;
+  font-size:clamp(24px,4vw,36px);
+  font-weight:700;
+  margin-bottom:12px;
+}
+.section-desc{
+  text-align:center;
+  font-size:15px;
+  color:var(--text-muted);
+  max-width:500px;
+  margin:0 auto 48px;
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+.feature-card{
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  padding:28px 24px;
+  transition:transform .2s,box-shadow .2s;
+}
+.feature-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(44,36,24,.06);
+}
+.feature-icon{
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  margin-bottom:16px;
+}
+.feature-card h3{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.feature-card p{
+  font-size:13px;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+
+/* ===== HOW IT WORKS ===== */
+.how{
+  padding:80px 24px;
+  background:var(--card);
+  border-top:1.5px solid var(--border);
+  border-bottom:1.5px solid var(--border);
+}
+.how-inner{
+  max-width:700px;
+  margin:0 auto;
+}
+.steps{
+  display:flex;
+  flex-direction:column;
+  gap:32px;
+  margin-top:48px;
+}
+.step{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+}
+.step-num{
+  width:40px;
+  height:40px;
+  min-width:40px;
+  border-radius:10px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.step h3{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+.step p{
+  font-size:13px;
+  color:var(--text-muted);
+}
+
+/* ===== CTA ===== */
+.bottom-cta{
+  padding:80px 24px;
+  text-align:center;
+  max-width:600px;
+  margin:0 auto;
+}
+.bottom-cta h2{
+  font-size:clamp(24px,4vw,36px);
+  font-weight:700;
+  margin-bottom:12px;
+}
+.bottom-cta p{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-bottom:32px;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  padding:32px 24px;
+  text-align:center;
+  border-top:1.5px solid var(--border);
+}
+.footer-links{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+.footer-links a{
+  font-size:13px;
+  color:var(--text-muted);
+  text-decoration:none;
+}
+.footer-links a:hover{color:var(--accent)}
+.footer-copy{
+  font-size:11px;
+  color:var(--text-muted);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+  .hero{min-height:90vh;padding:60px 20px}
+  .hero-logo-text{font-size:40px}
+  .hero-cta{padding:12px 28px;font-size:15px}
+  .hero-secondary{display:block;margin:12px 0 0}
+  .feature-grid{grid-template-columns:1fr}
+  .step{gap:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-logo">
+    <svg width="56" height="56" viewBox="0 0 48 48"><rect width="48" height="48" rx="11" fill="#e67e22"/><g transform="translate(7.5,8)"><rect x="0" y="0" width="28" height="7" rx="1.5" fill="#fff"/><rect x="10" y="0" width="8" height="32" rx="1.5" fill="#fff"/><rect x="20" y="10" width="13" height="6" rx="1.3" fill="#fff" opacity="0.95"/><rect x="20" y="18" width="10" height="6" rx="1.3" fill="#fff" opacity="0.7"/><rect x="20" y="26" width="7" height="6" rx="1.3" fill="#fff" opacity="0.45"/></g></svg>
+    <span class="hero-logo-text">Tally</span>
+  </div>
+  <p class="hero-tagline">The simple balance tracker</p>
+  <p class="hero-sub"><span>Track balances</span> across all your activities</p>
+  <h1 class="hero-headline">Never lose track of what's owed — ever.</h1>
+  <p class="hero-desc">Track sessions, projects, lending, and group expenses in one clean app. No clutter, no complexity.</p>
+  <div>
+    <a href="Tally/" class="hero-cta">Open Tally — It's Free</a>
+    <a href="#features" class="hero-secondary">See what it does ↓</a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+  <p class="section-desc">Tally keeps it simple — track what matters, skip the rest.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fdf0e0">📊</div>
+      <h3>Activity Tracking</h3>
+      <p>Track recurring sessions with anyone — lessons, freelance work, or regular meetups. See running balances at a glance.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#e8f5e9">📁</div>
+      <h3>Project Budgets</h3>
+      <p>Group expenses under a project, split costs between people, and track who owes what in real time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fff3e0">🤝</div>
+      <h3>Lending & Borrowing</h3>
+      <p>Keep a clear record of money lent or borrowed. Never forget who owes you — or who you owe.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#e3f2fd">⏱️</div>
+      <h3>Session Timers</h3>
+      <p>Built-in timers for hourly sessions. Start, pause, stop — and the balance updates automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fce4ec">👥</div>
+      <h3>Group Expenses</h3>
+      <p>Split bills, track shared costs, and settle up — all within a simple group interface.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#f3e5f5">☁️</div>
+      <h3>Cloud Sync</h3>
+      <p>Sign in with Google and your data syncs across all your devices. Works offline too.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <h2 class="section-title">Up and running in seconds</h2>
+    <p class="section-desc">No sign-up required. Just open and start tracking.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Open Tally</h3>
+          <p>No download, no install. It runs right in your browser and works on any device.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Add an activity</h3>
+          <p>Create an activity, project, or lending record. Set the rate, the people involved, and go.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Track as you go</h3>
+          <p>Log sessions, add expenses, start timers. Tally keeps your running balance updated in real time.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Export anytime</h3>
+          <p>Generate a clean PDF or Excel report whenever you need it — for yourself or to share.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Start tracking for free</h2>
+  <p>No account needed. No credit card. Just open Tally and go.</p>
+  <a href="Tally/" class="hero-cta">Open Tally</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="Tally/">Open App</a>
+    <a href="Tally/privacy.html">Privacy Policy</a>
+    <a href="mailto:tallyapp@proton.me">Contact</a>
+  </div>
+  <p class="footer-copy">© 2026 Tally. The simple balance tracker.</p>
+</footer>
+
+</body>
+</html>
